@@ -11,3 +11,6 @@ crossbeam = "0.2.8"
 num_cpus = "1.0"
 num = "0.1.27"
 image = "0.13.0"
+
+[profile.release]
+debug = true
