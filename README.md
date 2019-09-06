@@ -10,3 +10,5 @@ This is a collection mini rust project to practise *RUST* programming.
 | iron-gcd      | gcd w/ web interface |
 | fibonacci    | calculate fibonacci series|
 | mandelbrot    | calculate mandelbrot set|
+| iterator    | iterator examples  |
+| deref       | dereference trait  examples  |
