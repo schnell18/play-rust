@@ -1,9 +1,11 @@
 use std::ffi::OsStr;
 use std::path::Path;
 use std::collections::BTreeSet;
+use std::collections::HashMap;
 
 fn main() {
     println!("Hello, world!");
+    test_flat_map();
 }
 
 #[test]
@@ -46,4 +48,23 @@ fn test_btreeset_iter() {
     assert_eq!(it.next(), Some("Liebestraume No. 3".to_string()));
     assert_eq!(it.next(), Some("Lucy in the sky With Diamonds".to_string()));
     assert_eq!(it.next(), None);
+}
+
+//#[test]
+fn test_flat_map() {
+    let mut major_cities = HashMap::new();
+    major_cities.insert("Japan", vec!["Tokyo", "Kyoto"]);
+    major_cities.insert("US", vec!["Portland", "Nashville"]);
+    major_cities.insert("Brazil", vec!["Sao Paulo", "Brasilia"]);
+    major_cities.insert("Kenya", vec!["Nairobi", "Mombasa"]);
+    major_cities.insert("Dutch", vec!["Amsterdam", "Utrecht"]);
+
+    // for &city in major_cities.keys().flat_map(|country| &major_cities[country]) {
+    for city in major_cities.keys().flat_map(|country| &major_cities[country]) {
+        println!("{}", city);
+    }
+
+    for (i, city) in major_cities.keys().flat_map(|country| &major_cities[country]).enumerate() {
+        println!("{}: {}", i+1, city);
+    }
 }
