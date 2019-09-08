@@ -2,10 +2,12 @@ use std::ffi::OsStr;
 use std::path::Path;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
+use std::iter::{once, repeat};
 
 fn main() {
     println!("Hello, world!");
     test_flat_map();
+    fizz_buzz();
 }
 
 #[test]
@@ -66,5 +68,21 @@ fn test_flat_map() {
 
     for (i, city) in major_cities.keys().flat_map(|country| &major_cities[country]).enumerate() {
         println!("{}: {}", i+1, city);
+    }
+}
+
+fn fizz_buzz() {
+    let fizzes = repeat("").take(2).chain(once("fizz")).cycle();
+    let buzzes = repeat("").take(4).chain(once("buzz")).cycle();
+    let fizzes_buzzes = fizzes.zip(buzzes);
+    let fizz_buzz = (1..100).zip(fizzes_buzzes)
+        .map(|tuple|
+            match tuple {
+                (i, ("", "")) => i.to_string(),
+                (_, (fizz, buzz)) => format!("{}{}", fizz, buzz)
+            }
+        );
+    for line in fizz_buzz {
+        println!("{}", line);
     }
 }
