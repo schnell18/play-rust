@@ -12,3 +12,4 @@ This is a collection mini rust project to practise *RUST* programming.
 | mandelbrot    | calculate mandelbrot set|
 | iterator    | iterator examples  |
 | deref       | dereference trait  examples  |
+| format       | various formatting examples  |
