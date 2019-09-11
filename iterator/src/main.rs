@@ -3,11 +3,13 @@ use std::path::Path;
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::iter::{once, repeat};
+use rand::{Rng, thread_rng};
 
 fn main() {
     println!("Hello, world!");
     test_flat_map();
     fizz_buzz();
+    shuffle_demo();
 }
 
 #[test]
@@ -71,6 +73,12 @@ fn test_flat_map() {
     }
 }
 
+#[test]
+fn test_zip() {
+    let v: Vec<_> = (0..).zip("ABCD".chars()).collect();
+    assert_eq!(v, vec![(0, 'A'), (1, 'B'), (2, 'C'), (3, 'D')]);
+}
+
 fn fizz_buzz() {
     let fizzes = repeat("").take(2).chain(once("fizz")).cycle();
     let buzzes = repeat("").take(4).chain(once("buzz")).cycle();
@@ -85,4 +93,11 @@ fn fizz_buzz() {
     for line in fizz_buzz {
         println!("{}", line);
     }
+}
+
+fn shuffle_demo() {
+    let mut my_vec = vec![1, 34, 3, 5, 9, 10];
+    println!("before shuffle: {}", my_vec);
+    thread_rng().shuffle(&my_vec);
+    println!("after shuffle: {}", my_vec);
 }
