@@ -1,7 +1,7 @@
 extern crate image;
 extern crate num;
 extern crate num_cpus;
-extern crate crossbeam;
+extern crate rayon;
 
 use image::ColorType;
 use image::png::PNGEncoder;
@@ -9,6 +9,7 @@ use num::Complex;
 use std::str::FromStr;
 use std::io::Write;
 use std::fs::File;
+use rayon::prelude::*;
 
 fn escape_time(c: Complex<f64>, limit: u32) -> Option<u32> {
     let mut z = Complex { re: 0.0, im: 0.0};
@@ -147,24 +148,21 @@ fn main() {
     ).unwrap();
  
     {
-        let bands: Vec<&mut [u8]> = pixels.chunks_mut(rows_per_band * bounds.0).collect();
-        crossbeam::scope(|spawner| {
-            for (i, band) in bands.into_iter().enumerate() {
-                let top = rows_per_band * i;
-                let height = band.len() / bounds.0;
-                let band_bounds = (bounds.0, height);
+        let bands: Vec<&mut [u8]> = pixels
+            .chunks_mut(bounds.0)
+            .enumerate()
+            .collect();
+        
+        bands.into_par_iter()
+            .weight_max()
+            .for_each(|(i, band)|
+                let top = i;
+                let band_bounds = (bounds.0, 1);
                 let band_upper_left = pixel_to_point(bounds, (0, top), upper_left, lower_right);
-                let band_lower_right = pixel_to_point(bounds, (bounds.0, top + height), upper_left, lower_right);
-
-                spawner.spawn(move || {
-                    render(band, band_bounds, band_upper_left, band_lower_right);
-                });
-            }
-        });
+                let band_lower_right = pixel_to_point(bounds, (bounds.0, top + 1), upper_left, lower_right);
+                render(band, band_bounds, band_upper_left, band_lower_right);
+            );
     }
-
-
-    render(&mut pixels, bounds, upper_left, lower_right);
 
     write_image(&args[1], &pixels, bounds).expect(
             "error writing PNG file"
