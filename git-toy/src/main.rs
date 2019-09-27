@@ -1,4 +1,6 @@
-mod raw;
+mod git;
+extern crate libc;
+
 use std::ffi::{CString, CStr};
 use std::mem;
 use std::ptr;
