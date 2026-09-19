@@ -13,3 +13,4 @@ This is a collection mini rust project to practise *RUST* programming.
 | iterator    | iterator examples  |
 | deref       | dereference trait  examples  |
 | format       | various formatting examples  |
+| taskr       | example Axum web application |
