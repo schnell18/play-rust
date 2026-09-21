@@ -11,3 +11,4 @@ async programming
 [dependencies]
 tokio = { version = "1", features = ["full"]}
 reqwest = { version = "0.13", features = ["json"] }
+ureq = { version = "3", features = ["socks-proxy", "charset"] }
